@@ -1,0 +1,13 @@
+name: analog2cad
+services:
+  core:
+    build:
+      context: .
+    image: analog2cad/core:latest
+    env_file:
+      - ./.env.prod
+    ports:
+      - "8011:8011"
+    volumes:
+      - ./artifacts:/app/artifacts
+    restart: unless-stopped

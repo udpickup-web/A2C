@@ -9,4 +9,3 @@ artifacts/
 tmp.json
 app/tmp.json
 curl*.exe
-.env.prod

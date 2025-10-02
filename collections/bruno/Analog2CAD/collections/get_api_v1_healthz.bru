@@ -1,0 +1,9 @@
+type: http
+name: Healthz
+method: GET
+url: {baseUrl}/api/v1/healthz
+headers: {
+  "Content-Type": "application/json",
+  "Authorization": "Bearer {{token}}"
+}
+body: 

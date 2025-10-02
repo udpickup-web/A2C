@@ -1,0 +1,1358 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Core API (TZ v1) — mobile-first",
+    "description": "Бэкенд с префиксом /api/v1, единым контрактом ошибок и stub-экспортом артефактов.",
+    "version": "1.1.0"
+  },
+  "paths": {
+    "/api/v1/healthz": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Healthz",
+        "operationId": "healthz_api_v1_healthz_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/preflight": {
+      "post": {
+        "tags": [
+          "preflight"
+        ],
+        "summary": "Preflight",
+        "operationId": "preflight_api_v1_preflight_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreflightIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreflightOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/views": {
+      "post": {
+        "tags": [
+          "views"
+        ],
+        "summary": "Views",
+        "operationId": "views_api_v1_views_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ViewsIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewsOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sketch2d": {
+      "post": {
+        "tags": [
+          "sketch"
+        ],
+        "summary": "Sketch2D",
+        "operationId": "sketch2d_api_v1_sketch2d_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sketch2DIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sketch2DOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/plan": {
+      "post": {
+        "tags": [
+          "plan"
+        ],
+        "summary": "Plan",
+        "operationId": "plan_api_v1_plan_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/build": {
+      "post": {
+        "tags": [
+          "build"
+        ],
+        "summary": "Build",
+        "operationId": "build_api_v1_build_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuildIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/register": {
+      "post": {
+        "tags": [
+          "register"
+        ],
+        "summary": "Register",
+        "operationId": "register_api_v1_register_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/export": {
+      "post": {
+        "tags": [
+          "export"
+        ],
+        "summary": "Export Api",
+        "description": "Поддерживает два взаимоисключающих сценария:\n  A) {\"model_id\": \"<uuid>\"} — возвращает ссылки на /artifacts/<id>/model.* и карту наличия файлов.\n  B) {\"features\": {...}, \"plan\": {...}} — stub: генерит новый export_id и создаёт заглушечные файлы.",
+        "operationId": "export_api_api_v1_export_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/upload": {
+      "post": {
+        "tags": [
+          "upload"
+        ],
+        "summary": "Upload",
+        "operationId": "upload_api_v1_upload_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_api_v1_upload_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_upload_api_v1_upload_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_api_v1_upload_post"
+      },
+      "BuildIn": {
+        "properties": {
+          "features": {
+            "items": {
+              "$ref": "#/components/schemas/FeatureItem"
+            },
+            "type": "array",
+            "title": "Features"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "features"
+        ],
+        "title": "BuildIn"
+      },
+      "BuildOut": {
+        "properties": {
+          "build_id": {
+            "type": "string",
+            "title": "Build Id"
+          },
+          "features_count": {
+            "type": "integer",
+            "title": "Features Count"
+          },
+          "types_histogram": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Types Histogram"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "build_id",
+          "features_count",
+          "types_histogram"
+        ],
+        "title": "BuildOut"
+      },
+      "FeatureItem": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "extrude",
+                  "revolve",
+                  "cut_extrude",
+                  "cut_revolve",
+                  "add_extrude",
+                  "add_revolve"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mode"
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile"
+          },
+          "thickness_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thickness Mm"
+          },
+          "sketch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sketch"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "depth_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Depth Mm"
+          },
+          "pos_mm": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pos Mm"
+          },
+          "diam_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diam Mm"
+          },
+          "style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style"
+          },
+          "count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Count"
+          },
+          "step_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step Mm"
+          },
+          "pattern": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "linear",
+                  "polar"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pattern"
+          },
+          "ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ref"
+          },
+          "thickness_shell_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thickness Shell Mm"
+          },
+          "d_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "D Mm"
+          },
+          "angle_deg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Angle Deg"
+          },
+          "r_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "R Mm"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "FeatureItem"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HolePx": {
+        "properties": {
+          "center_px": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Center Px"
+          },
+          "r_px": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "R Px"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "center_px",
+          "r_px"
+        ],
+        "title": "HolePx"
+      },
+      "PlanIn": {
+        "properties": {
+          "order": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Order"
+          },
+          "units": {
+            "type": "string",
+            "enum": [
+              "mm",
+              "in"
+            ],
+            "title": "Units"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "order",
+          "units"
+        ],
+        "title": "PlanIn"
+      },
+      "PlanOut": {
+        "properties": {
+          "order": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Order"
+          },
+          "units": {
+            "type": "string",
+            "enum": [
+              "mm",
+              "in"
+            ],
+            "title": "Units"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "order",
+          "units",
+          "plan_id"
+        ],
+        "title": "PlanOut"
+      },
+      "PreflightIn": {
+        "properties": {
+          "standard": {
+            "type": "string",
+            "enum": [
+              "GOST",
+              "ISO",
+              "ASME",
+              "unknown"
+            ],
+            "title": "Standard"
+          },
+          "projection": {
+            "type": "string",
+            "enum": [
+              "first",
+              "third",
+              "unknown"
+            ],
+            "title": "Projection"
+          },
+          "units": {
+            "type": "string",
+            "enum": [
+              "mm",
+              "in"
+            ],
+            "title": "Units"
+          },
+          "scale": {
+            "type": "string",
+            "pattern": "^\\d+:\\d+$",
+            "title": "Scale"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PreflightPage"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "standard",
+          "projection",
+          "units",
+          "scale",
+          "page"
+        ],
+        "title": "PreflightIn"
+      },
+      "PreflightOut": {
+        "properties": {
+          "standard": {
+            "type": "string",
+            "enum": [
+              "GOST",
+              "ISO",
+              "ASME",
+              "unknown"
+            ],
+            "title": "Standard"
+          },
+          "projection": {
+            "type": "string",
+            "enum": [
+              "first",
+              "third",
+              "unknown"
+            ],
+            "title": "Projection"
+          },
+          "units": {
+            "type": "string",
+            "enum": [
+              "mm",
+              "in"
+            ],
+            "title": "Units"
+          },
+          "scale": {
+            "type": "string",
+            "pattern": "^\\d+:\\d+$",
+            "title": "Scale"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PreflightPage"
+          },
+          "preflight_id": {
+            "type": "string",
+            "title": "Preflight Id"
+          },
+          "normalized": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Normalized"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "standard",
+          "projection",
+          "units",
+          "scale",
+          "page",
+          "preflight_id",
+          "normalized"
+        ],
+        "title": "PreflightOut"
+      },
+      "PreflightPage": {
+        "properties": {
+          "w_px": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "W Px"
+          },
+          "h_px": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "H Px"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "w_px",
+          "h_px"
+        ],
+        "title": "PreflightPage"
+      },
+      "Sketch": {
+        "properties": {
+          "outer_polygon_px": {
+            "items": {
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array",
+              "maxItems": 2,
+              "minItems": 2
+            },
+            "type": "array",
+            "title": "Outer Polygon Px"
+          },
+          "holes_px": {
+            "items": {
+              "$ref": "#/components/schemas/HolePx"
+            },
+            "type": "array",
+            "title": "Holes Px"
+          },
+          "slots_px": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slots Px"
+          },
+          "arcs_px": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arcs Px"
+          },
+          "solved": {
+            "$ref": "#/components/schemas/SolvedFlags"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "outer_polygon_px",
+          "solved"
+        ],
+        "title": "Sketch"
+      },
+      "Sketch2DIn": {
+        "properties": {
+          "sketch": {
+            "$ref": "#/components/schemas/Sketch"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "sketch"
+        ],
+        "title": "Sketch2DIn"
+      },
+      "Sketch2DOut": {
+        "properties": {
+          "sketch_id": {
+            "type": "string",
+            "title": "Sketch Id"
+          },
+          "bbox_px": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 4,
+            "minItems": 4,
+            "title": "Bbox Px"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sketch_id",
+          "bbox_px"
+        ],
+        "title": "Sketch2DOut"
+      },
+      "SolvedFlags": {
+        "properties": {
+          "outer": {
+            "type": "boolean",
+            "title": "Outer"
+          },
+          "holes": {
+            "type": "boolean",
+            "title": "Holes"
+          },
+          "slots": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slots"
+          },
+          "arcs": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arcs"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "outer",
+          "holes"
+        ],
+        "title": "SolvedFlags"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ViewItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "bbox_px": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 4,
+            "minItems": 4,
+            "title": "Bbox Px"
+          },
+          "angle_deg": {
+            "type": "number",
+            "title": "Angle Deg"
+          },
+          "sketch": {
+            "$ref": "#/components/schemas/Sketch"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "bbox_px",
+          "angle_deg",
+          "sketch"
+        ],
+        "title": "ViewItem"
+      },
+      "ViewsIn": {
+        "properties": {
+          "views": {
+            "items": {
+              "$ref": "#/components/schemas/ViewItem"
+            },
+            "type": "array",
+            "title": "Views"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "views"
+        ],
+        "title": "ViewsIn"
+      },
+      "ViewsOut": {
+        "properties": {
+          "views_count": {
+            "type": "integer",
+            "title": "Views Count"
+          },
+          "areas": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Areas"
+          },
+          "solved_all": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Solved All"
+          },
+          "stats": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Stats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "views_count",
+          "areas",
+          "solved_all",
+          "stats"
+        ],
+        "title": "ViewsOut"
+      }
+    }
+  }
+}
