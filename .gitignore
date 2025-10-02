@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+artifacts/
+*.zip
+*.step
+*.stl
+*.glb
+*.bin
+tmp.json
+app/tmp.json
+curl*.exe
