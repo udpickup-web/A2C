@@ -1,0 +1,15 @@
+# Текстовые файлы -> нормализация LF в репо, CRLF на Windows
+* text=auto eol=lf
+
+# Скрипты батников — оставляем CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Бинарники
+*.png binary
+*.jpg binary
+*.zip binary
+*.step binary
+*.stl binary
+*.glb binary
