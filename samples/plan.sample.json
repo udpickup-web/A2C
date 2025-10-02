@@ -1,0 +1,8 @@
+{
+  "order": [
+    "front",
+    "top"
+  ],
+  "units": "mm",
+  "notes": "build from front, then refine by top"
+}

@@ -1,0 +1,96 @@
+{
+  "preflight": {
+    "standard": "ISO",
+    "projection": "first",
+    "units": "mm",
+    "scale": "1:1",
+    "page": {
+      "w_px": 2480,
+      "h_px": 3508
+    }
+  },
+  "views": {
+    "views": [
+      {
+        "id": "front",
+        "bbox_px": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "angle_deg": 0.0,
+        "sketch": {
+          "outer_polygon_px": [
+            [
+              0,
+              0
+            ],
+            [
+              100,
+              0
+            ],
+            [
+              100,
+              50
+            ],
+            [
+              0,
+              50
+            ]
+          ],
+          "holes_px": [
+            {
+              "center_px": [
+                50,
+                25
+              ],
+              "r_px": 5.0
+            }
+          ],
+          "solved": {
+            "outer": true,
+            "holes": true,
+            "slots": true,
+            "arcs": true
+          }
+        }
+      },
+      {
+        "id": "top",
+        "bbox_px": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "angle_deg": 0.0,
+        "sketch": {
+          "outer_polygon_px": [
+            [
+              0,
+              0
+            ],
+            [
+              80,
+              0
+            ],
+            [
+              80,
+              40
+            ],
+            [
+              0,
+              40
+            ]
+          ],
+          "holes_px": [],
+          "solved": {
+            "outer": true,
+            "holes": true
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+services:
+  coreapi:
+    build: .
+    ports:
+      - "8011:8011"
+    environment:
+      - APP_ENV=prod
+      - AUTH_REQUIRED=0
+      - PORT=8011
+      - CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+    volumes:
+      - ./artifacts:/app/artifacts
+    restart: unless-stopped

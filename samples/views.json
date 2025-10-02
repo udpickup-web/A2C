@@ -1,0 +1,51 @@
+{
+  "views": [
+    {
+      "id": "front",
+      "bbox_px": [
+        100.0,
+        100.0,
+        600.0,
+        600.0
+      ],
+      "angle_deg": 0.0,
+      "sketch": {
+        "outer_polygon_px": [
+          [
+            110.0,
+            110.0
+          ],
+          [
+            590.0,
+            110.0
+          ],
+          [
+            590.0,
+            590.0
+          ],
+          [
+            110.0,
+            590.0
+          ]
+        ],
+        "holes_px": [
+          {
+            "center_px": [
+              350.0,
+              350.0
+            ],
+            "r_px": 50.0
+          }
+        ],
+        "slots_px": [],
+        "arcs_px": [],
+        "solved": {
+          "outer": true,
+          "holes": true,
+          "slots": true,
+          "arcs": true
+        }
+      }
+    }
+  ]
+}

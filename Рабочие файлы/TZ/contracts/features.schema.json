@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "features.json",
+  "type": "object",
+  "required": [
+    "features"
+  ],
+  "properties": {
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "extrude",
+              "revolve",
+              "cut_extrude",
+              "cut_revolve",
+              "add_extrude",
+              "add_revolve"
+            ]
+          },
+          "profile": {
+            "type": "string"
+          },
+          "thickness_mm": {
+            "type": "number"
+          },
+          "sketch": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "depth_mm": {
+            "type": "number"
+          },
+          "pos_mm": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "diam_mm": {
+            "type": "number"
+          },
+          "style": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "step_mm": {
+            "type": "number"
+          },
+          "pattern": {
+            "type": "string",
+            "enum": [
+              "linear",
+              "polar"
+            ]
+          },
+          "ref": {
+            "type": "string"
+          },
+          "thickness_shell_mm": {
+            "type": "number"
+          },
+          "d_mm": {
+            "type": "number"
+          },
+          "angle_deg": {
+            "type": "number"
+          },
+          "r_mm": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

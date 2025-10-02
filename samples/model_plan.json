@@ -1,0 +1,9 @@
+{
+  "order": [
+    "front",
+    "right",
+    "top"
+  ],
+  "units": "mm",
+  "notes": "Start from front view; extrude by 10mm then refine."
+}

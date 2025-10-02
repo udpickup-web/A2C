@@ -1,0 +1,20 @@
+{
+  "features": [
+    {
+      "type": "base",
+      "mode": "extrude",
+      "profile": "front",
+      "depth_mm": 10.0
+    },
+    {
+      "type": "hole",
+      "mode": "cut_extrude",
+      "d_mm": 5.0,
+      "depth_mm": 10.0,
+      "pos_mm": [
+        30.0,
+        20.0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "preflight.json",
+  "type": "object",
+  "required": [
+    "standard",
+    "projection",
+    "units",
+    "scale",
+    "page"
+  ],
+  "properties": {
+    "standard": {
+      "type": "string",
+      "enum": [
+        "GOST",
+        "ISO",
+        "ASME",
+        "unknown"
+      ]
+    },
+    "projection": {
+      "type": "string",
+      "enum": [
+        "first",
+        "third",
+        "unknown"
+      ]
+    },
+    "units": {
+      "type": "string",
+      "enum": [
+        "mm",
+        "in"
+      ]
+    },
+    "scale": {
+      "type": "string",
+      "pattern": "^\\d+:\\d+$"
+    },
+    "page": {
+      "type": "object",
+      "required": [
+        "w_px",
+        "h_px"
+      ],
+      "properties": {
+        "w_px": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "h_px": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
