@@ -1,10 +1,13 @@
-from pydantic import BaseModel, Field, ConfigDict, conlist
-from typing import List, Optional, Literal, Any
+from pydantic import BaseModel, ConfigDict, conlist
+from typing import List, Optional, Literal
+
 
 class FeatureItem(BaseModel):
     model_config = ConfigDict(extra="allow")  # schemas allow extra on items
     type: str
-    mode: Optional[Literal["extrude","revolve","cut_extrude","cut_revolve","add_extrude","add_revolve"]] = None
+    mode: Optional[
+        Literal["extrude", "revolve", "cut_extrude", "cut_revolve", "add_extrude", "add_revolve"]
+    ] = None
     profile: Optional[str] = None
     thickness_mm: Optional[float] = None
     sketch: Optional[str] = None
@@ -15,12 +18,13 @@ class FeatureItem(BaseModel):
     style: Optional[str] = None
     count: Optional[int] = None
     step_mm: Optional[float] = None
-    pattern: Optional[Literal["linear","polar"]] = None
+    pattern: Optional[Literal["linear", "polar"]] = None
     ref: Optional[str] = None
     thickness_shell_mm: Optional[float] = None
     d_mm: Optional[float] = None
     angle_deg: Optional[float] = None
     r_mm: Optional[float] = None
+
 
 class Features(BaseModel):
     model_config = ConfigDict(extra="forbid")

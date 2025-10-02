@@ -7,9 +7,11 @@ from uuid import uuid4
 
 router = APIRouter(prefix="/build", tags=["build"])
 
+
 class BuildRequest(BaseModel):
     features: Features
     plan: Optional[ModelPlan] = None
+
 
 @router.post("", summary="Start build process from features (and plan)")
 def start_build(payload: BuildRequest):

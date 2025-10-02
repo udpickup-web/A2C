@@ -4,6 +4,7 @@ from uuid import uuid4
 
 router = APIRouter(prefix="/plan", tags=["plan"])
 
+
 @router.post("", summary="Register a modeling plan / build order")
 def submit_plan(payload: ModelPlan):
     plan_id = str(uuid4())

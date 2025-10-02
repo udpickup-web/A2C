@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import List, Tuple
-import math
+
 
 def polygon_area(points: List[Tuple[float, float]]) -> float:
     """Вычисляет площадь полигона (по модулю) методом шнурка."""
@@ -13,6 +13,7 @@ def polygon_area(points: List[Tuple[float, float]]) -> float:
         x2, y2 = points[(i + 1) % n]
         area += x1 * y2 - x2 * y1
     return abs(area) / 2.0
+
 
 def bbox_from_points(points: List[Tuple[float, float]]):
     xs = [p[0] for p in points]

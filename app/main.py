@@ -1,21 +1,27 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import os, uuid, json
-from typing import Dict, Optional, Tuple, List
+import os
+import uuid
+from typing import Dict, Optional, Tuple
 
 from fastapi import FastAPI, APIRouter, Depends, Header, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.exceptions import RequestValidationError
 
 from .schemas import (
-    PreflightIn, PreflightOut,
-    ViewsIn, ViewsOut,
-    PlanIn, PlanOut,
-    BuildIn, BuildOut,
-    Sketch2DIn, Sketch2DOut,
+    PreflightIn,
+    PreflightOut,
+    ViewsIn,
+    ViewsOut,
+    PlanIn,
+    PlanOut,
+    BuildIn,
+    BuildOut,
+    Sketch2DIn,
+    Sketch2DOut,
 )
 from .utils import polygon_area, bbox_from_points
 from .errors import (
@@ -27,8 +33,10 @@ from .errors import (
 
 ARTIFACTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "artifacts")
 
+
 def get_app_env() -> str:
     return os.getenv("APP_ENV", "dev").lower()
+
 
 def get_cors_origins() -> list[str]:
     if get_app_env() != "prod":
@@ -36,14 +44,17 @@ def get_cors_origins() -> list[str]:
     raw = os.getenv("CORS_ORIGINS", "")
     return [x.strip() for x in raw.split(",") if x.strip()]
 
+
 def is_auth_required() -> bool:
     if os.getenv("AUTH_REQUIRED", "") in ("1", "true", "yes"):
         return True
     return get_app_env() == "prod"
 
+
 def get_max_body_bytes() -> int:
     mb = int(os.getenv("MAX_BODY_MB", "10"))
     return mb * 1024 * 1024
+
 
 # ---------- App ----------
 
@@ -73,6 +84,7 @@ app.add_exception_handler(Exception, unhandled_exception_handler)
 
 # ---------- Middleware: X-Request-Id, JSON empty-body/size guard ----------
 
+
 @app.middleware("http")
 async def request_context_mw(request: Request, call_next):
     # X-Request-Id
@@ -87,7 +99,12 @@ async def request_context_mw(request: Request, call_next):
             body_bytes = b""
 
         if len(body_bytes) > get_max_body_bytes():
-            return JSONResponse(status_code=413, content=error_payload(413, "Request body too large", {"max_bytes": get_max_body_bytes()}))
+            return JSONResponse(
+                status_code=413,
+                content=error_payload(
+                    413, "Request body too large", {"max_bytes": get_max_body_bytes()}
+                ),
+            )
 
         ctype = request.headers.get("content-type", "")
         if "application/json" in ctype and (body_bytes.strip() in (b"", b"null")):
@@ -108,40 +125,48 @@ async def request_context_mw(request: Request, call_next):
                 if "application/json" not in ctype.lower():
                     return JSONResponse(
                         status_code=415,
-                        content=error_payload(415, "Unsupported Media Type", {"expected": "application/json"}),
-                   )
+                        content=error_payload(
+                            415, "Unsupported Media Type", {"expected": "application/json"}
+                        ),
+                    )
 
         # Re-inject body into request stream
         async def receive():
             return {"type": "http.request", "body": body_bytes, "more_body": False}
+
         request._receive = receive  # type: ignore[attr-defined]
 
     response = await call_next(request)
     response.headers["X-Request-Id"] = req_id
     return response
 
+
 # ---------- Auth dependency ----------
+
 
 def bearer_auth(authorization: Optional[str] = Header(default=None)):
     if not is_auth_required():
         return
     if not authorization or not authorization.lower().startswith("bearer "):
-        from fastapi import HTTPException
         raise StarletteHTTPException(status_code=401, detail="Missing bearer token")
     token = authorization.split(" ", 1)[1].strip()
     expected = os.getenv("AUTH_TOKEN", "")
     if expected and token != expected:
         raise StarletteHTTPException(status_code=401, detail="Invalid token")
 
+
 # ---------- Router with prefix /api/v1 ----------
 
 router = APIRouter(prefix="/api/v1", dependencies=[Depends(bearer_auth)])
+
 
 @router.get("/healthz", tags=["meta"])
 def healthz():
     return {"status": "ok"}
 
+
 # ---------- /preflight ----------
+
 
 @router.post("/preflight", response_model=PreflightOut, tags=["preflight"])
 def preflight(inp: PreflightIn):
@@ -156,7 +181,9 @@ def preflight(inp: PreflightIn):
     }
     return PreflightOut(**inp.model_dump(), preflight_id=str(uuid.uuid4()), normalized=normalized)
 
+
 # ---------- /views ----------
+
 
 @router.post("/views", response_model=ViewsOut, tags=["views"])
 def views(inp: ViewsIn):
@@ -178,20 +205,26 @@ def views(inp: ViewsIn):
     }
     return ViewsOut(views_count=len(inp.views), areas=areas, solved_all=solved_aggr, stats=stats)
 
+
 # ---------- /sketch2d ----------
+
 
 @router.post("/sketch2d", response_model=Sketch2DOut, tags=["sketch"])
 def sketch2d(inp: Sketch2DIn):
     bbox = bbox_from_points(inp.sketch.outer_polygon_px)
     return Sketch2DOut(sketch_id=str(uuid.uuid4()), bbox_px=bbox)
 
+
 # ---------- /plan ----------
+
 
 @router.post("/plan", response_model=PlanOut, tags=["plan"])
 def plan(inp: PlanIn):
     return PlanOut(**inp.model_dump(), plan_id=str(uuid.uuid4()))
 
+
 # ---------- /build ----------
+
 
 @router.post("/build", response_model=BuildOut, tags=["build"])
 def build(inp: BuildIn):
@@ -199,24 +232,33 @@ def build(inp: BuildIn):
     for f in inp.features:
         hist[f.type] = hist.get(f.type, 0) + 1
     notes = "OK"
-    return BuildOut(build_id=str(uuid.uuid4()), features_count=len(inp.features), types_histogram=hist, notes=notes)
+    return BuildOut(
+        build_id=str(uuid.uuid4()),
+        features_count=len(inp.features),
+        types_histogram=hist,
+        notes=notes,
+    )
+
 
 # ---------- /register (views + preflight -> anchors + views) ----------
 
+
 class ViewsAnchorsOut(JSONResponse):
     pass
+
 
 @router.post("/register", tags=["register"])
 def register(payload: Dict):
     # Payload MUST contain "views" and "preflight"
     if "views" not in payload or "preflight" not in payload:
-        raise StarletteHTTPException(status_code=400, detail="Expected payload with 'views' and 'preflight'")
+        raise StarletteHTTPException(
+            status_code=400, detail="Expected payload with 'views' and 'preflight'"
+        )
     try:
         views_in = ViewsIn(**payload["views"])
         preflight_in = PreflightIn(**payload["preflight"])
     except Exception as e:
         # Let Pydantic/handlers render 422 if shape is wrong
-        from fastapi import Body
         raise e
 
     anchors: Dict[str, Dict[str, Tuple[float, float]]] = {}
@@ -237,7 +279,9 @@ def register(payload: Dict):
     }
     return JSONResponse(out)
 
+
 # ---------- /export (features+plan OR model_id) ----------
+
 
 @router.post("/export", tags=["export"])
 def export_api(payload: Dict):
@@ -246,7 +290,9 @@ def export_api(payload: Dict):
     features = payload.get("features")
     plan = payload.get("plan")
     if not model_id and not (features and plan):
-        raise StarletteHTTPException(status_code=400, detail="Provide either 'model_id' or both 'features' and 'plan'")
+        raise StarletteHTTPException(
+            status_code=400, detail="Provide either 'model_id' or both 'features' and 'plan'"
+        )
 
     export_id = str(uuid.uuid4())
     exp_dir = os.path.join(ARTIFACTS_DIR, export_id)
@@ -261,16 +307,20 @@ def export_api(payload: Dict):
         "source": "model_id" if model_id else "features+plan",
         "counts": {
             "features": len(features.get("features", [])) if isinstance(features, dict) else None
-        }
+        },
     }
-    return JSONResponse({
-        "step_url": f"{base_url}/model.step",
-        "stl_url": f"{base_url}/model.stl",
-        "glb_url": f"{base_url}/model.glb",
-        "export_report": report
-    })
+    return JSONResponse(
+        {
+            "step_url": f"{base_url}/model.step",
+            "stl_url": f"{base_url}/model.stl",
+            "glb_url": f"{base_url}/model.glb",
+            "export_report": report,
+        }
+    )
+
 
 # ---------- /upload (multipart) ----------
+
 
 @router.post("/upload", tags=["upload"])
 async def upload(file: UploadFile = File(...)):
@@ -282,13 +332,19 @@ async def upload(file: UploadFile = File(...)):
     content = await file.read()
     with open(path, "wb") as f:
         f.write(content)
-    return {"upload_id": upload_id, "filename": file.filename, "size": len(content), "url": f"/artifacts/{upload_id}/{file.filename}"}
+    return {
+        "upload_id": upload_id,
+        "filename": file.filename,
+        "size": len(content),
+        "url": f"/artifacts/{upload_id}/{file.filename}",
+    }
+
 
 # Include router
 app.include_router(router)
+
 
 # Root (non-prefixed) for quick info
 @app.get("/", tags=["meta"])
 def root():
     return {"ok": True, "service": "core-api", "version": "1.1.0", "prefix": "/api/v1"}
-

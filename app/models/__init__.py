@@ -1,1 +1,1 @@
-﻿from ..schemas import *  # noqa
+from ..schemas import *  # noqa

@@ -4,6 +4,7 @@ from uuid import uuid4
 
 router = APIRouter(prefix="/preflight", tags=["preflight"])
 
+
 @router.post("", summary="Validate drawing meta and return normalized info")
 def do_preflight(payload: Preflight):
     preflight_id = str(uuid4())

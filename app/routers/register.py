@@ -3,6 +3,7 @@ from uuid import uuid4
 
 router = APIRouter(prefix="/register", tags=["register"])
 
+
 @router.post("", summary="Register a source drawing file (PDF/Image)")
 async def register_file(file: UploadFile = File(...)):
     # We only read size for metadata; content is not persisted in this stub.

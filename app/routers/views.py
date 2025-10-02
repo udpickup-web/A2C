@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from app.models.views import Views
-from typing import Dict
 
 router = APIRouter(prefix="/views", tags=["views"])
+
 
 @router.post("", summary="Accept 2D views and sketches")
 def submit_views(payload: Views):
