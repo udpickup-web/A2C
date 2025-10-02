@@ -59,9 +59,9 @@ def get_max_body_bytes() -> int:
 # ---------- App ----------
 
 app = FastAPI(
-    title="Core API (TZ v1) вЂ” mobile-first",
+    title="Core API (TZ v1) — mobile-first",
     version="1.1.0",
-    description="Р‘СЌРєРµРЅРґ СЃ РїСЂРµС„РёРєСЃРѕРј /api/v1, РµРґРёРЅС‹Рј РєРѕРЅС‚СЂР°РєС‚РѕРј РѕС€РёР±РѕРє Рё stub-СЌРєСЃРїРѕСЂС‚РѕРј Р°СЂС‚РµС„Р°РєС‚РѕРІ.",
+    description="Бэкенд с префиксом /api/v1, единым контрактом ошибок и stub-экспортом артефактов.",
 )
 
 # CORS
@@ -95,7 +95,6 @@ async def request_context_mw(request: Request, call_next):
         try:
             body_bytes = await request.body()
         except Exception:
-            # Will be handled by parser later; keep as empty
             body_bytes = b""
 
         if len(body_bytes) > get_max_body_bytes():
@@ -285,37 +284,85 @@ def register(payload: Dict):
 
 @router.post("/export", tags=["export"])
 def export_api(payload: Dict):
-    # Validate either {model_id} or {features, plan}
+    """
+    Поддерживает два взаимоисключающих сценария:
+      A) {"model_id": "<uuid>"} — возвращает ссылки на /artifacts/<id>/model.* и карту наличия файлов.
+      B) {"features": {...}, "plan": {...}} — stub: генерит новый export_id и создаёт заглушечные файлы.
+    """
     model_id = payload.get("model_id")
     features = payload.get("features")
     plan = payload.get("plan")
-    if not model_id and not (features and plan):
+
+    # Запрет смешанного ввода
+    if model_id and (features or plan):
         raise StarletteHTTPException(
-            status_code=400, detail="Provide either 'model_id' or both 'features' and 'plan'"
+            status_code=422,
+            detail="Provide either 'model_id' OR ('features' and 'plan'), not both",
         )
 
-    export_id = str(uuid.uuid4())
-    exp_dir = os.path.join(ARTIFACTS_DIR, export_id)
-    os.makedirs(exp_dir, exist_ok=True)
-    # Create stub files
-    for name in ("model.step", "model.stl", "model.glb"):
-        with open(os.path.join(exp_dir, name), "wb") as f:
-            f.write(b"stub-artifact")
-    base_url = f"/artifacts/{export_id}"
-    report = {
-        "id": export_id,
-        "source": "model_id" if model_id else "features+plan",
-        "counts": {
-            "features": len(features.get("features", [])) if isinstance(features, dict) else None
-        },
-    }
-    return JSONResponse(
-        {
-            "step_url": f"{base_url}/model.step",
-            "stl_url": f"{base_url}/model.stl",
-            "glb_url": f"{base_url}/model.glb",
-            "export_report": report,
+    # A) По model_id
+    if model_id is not None:
+        try:
+            mid = uuid.UUID(str(model_id))
+        except Exception:
+            raise StarletteHTTPException(
+                status_code=422, detail="Field 'model_id' must be a valid UUID"
+            )
+
+        base_dir = os.path.join(ARTIFACTS_DIR, str(mid))
+        exists = {
+            "step": os.path.exists(os.path.join(base_dir, "model.step")),
+            "stl": os.path.exists(os.path.join(base_dir, "model.stl")),
+            "glb": os.path.exists(os.path.join(base_dir, "model.glb")),
         }
+        base_url = f"/artifacts/{mid}"
+        return JSONResponse(
+            {
+                "step_url": f"{base_url}/model.step",
+                "stl_url": f"{base_url}/model.stl",
+                "glb_url": f"{base_url}/model.glb",
+                "export_report": {
+                    "source": "by_model_id",
+                    "resolver": "filesystem",
+                    "model_id": str(mid),
+                    "exists": exists,
+                },
+            }
+        )
+
+    # B) По features+plan (заглушка)
+    if isinstance(features, dict) and isinstance(plan, dict):
+        export_id = str(uuid.uuid4())
+        exp_dir = os.path.join(ARTIFACTS_DIR, export_id)
+        os.makedirs(exp_dir, exist_ok=True)
+        for name in ("model.step", "model.stl", "model.glb"):
+            with open(os.path.join(exp_dir, name), "wb") as f:
+                f.write(b"stub-artifact")
+        base_url = f"/artifacts/{export_id}"
+        report = {
+            "id": export_id,
+            "source": "features+plan",
+            "counts": {
+                "features": (
+                    len(features.get("features", []))
+                    if isinstance(features.get("features"), list)
+                    else None
+                )
+            },
+        }
+        return JSONResponse(
+            {
+                "step_url": f"{base_url}/model.step",
+                "stl_url": f"{base_url}/model.stl",
+                "glb_url": f"{base_url}/model.glb",
+                "export_report": report,
+            }
+        )
+
+    # Форма запроса не подошла
+    raise StarletteHTTPException(
+        status_code=400,
+        detail="Provide either 'model_id' or both 'features' and 'plan'",
     )
 
 
